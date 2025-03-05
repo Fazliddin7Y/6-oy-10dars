@@ -1,12 +1,20 @@
-import { useState } from "react";
-import { useData } from "../context/DataContext";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useData } from "../context/DataContext";
+import { useAuth } from "../context/AuthContext";
 
 const Add = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const { addData } = useData();
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login"); // ✅ Login qilmagan bo‘lsa, login sahifasiga yo‘naltirish
+    }
+  }, [user, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

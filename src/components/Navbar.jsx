@@ -5,19 +5,22 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
-      <div>
-        <Link className="mr-4 hover:underline" to="/">Home</Link>
-        {user && <Link className="mr-4 hover:underline" to="/add">Add</Link>}
-      </div>
-      <div>
-        {!user ? (
-          <>
-            <Link className="mr-4 hover:underline" to="/login">Login</Link>
-            <Link className="hover:underline" to="/register">Register</Link>
-          </>
+    <nav className="bg-gray-800 p-4 text-white flex justify-between">
+      <h1 className="text-xl font-bold">My App</h1>
+      <div className="flex space-x-4">
+        <Link to="/" className="hover:text-gray-300">Home</Link>
+        
+        {/* Faqat login qilingan bo‘lsa, "Add" menyusini ko‘rsatamiz */}
+        {user && <Link to="/add" className="hover:text-gray-300">Add</Link>}
+        
+        {/* Agar user login qilgan bo‘lsa, "Logout" tugmasi chiqadi */}
+        {user ? (
+          <button onClick={logout} className="hover:text-red-500">Logout</button>
         ) : (
-          <button className="bg-red-500 px-4 py-2 rounded hover:bg-red-600" onClick={logout}>Logout</button>
+          <>
+            <Link to="/login" className="hover:text-gray-300">Login</Link>
+            <Link to="/register" className="hover:text-gray-300">Register</Link>
+          </>
         )}
       </div>
     </nav>
