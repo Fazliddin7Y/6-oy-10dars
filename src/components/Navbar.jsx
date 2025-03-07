@@ -6,7 +6,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-800 p-4 text-white flex justify-between">
-      <h1 className="text-xl font-bold">My App</h1>
+      <h1 className="text-xl font-bold">Ashyo</h1>
       <div className="flex space-x-4">
         <Link to="/" className="hover:text-gray-300">Home</Link>
         
