@@ -1,52 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Search, ShoppingCart, User } from "lucide-react";
-import Input from "../components/ui/input";
 import Button from "../components/ui/button";
 import axios from "axios";
 import { notification } from "antd";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Home = () => {
   const [brands, setBrands] = useState([]);
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
+    // 🔹 Brendlarni olish (Fake API)
     axios
-      .get("https://api.ashyo.fullstackdev.uz/api/Brand/BrandController_getAllBrands")
+      .get("https://fakestoreapi.com/products/categories") // Brendlar sifatida kategoriyalarni ishlatamiz
       .then((response) => {
-        setBrands(response.data);
+        if (response.data) {
+          setBrands(response.data.map((name, index) => ({ id: index, name }))); // Array obyektga o‘girildi
+        } else {
+          throw new Error("Brendlar ma'lumoti kelmadi");
+        }
       })
-      .catch((error) => {
-        notification.error({ message: "Ma'lumotlarni yuklashda xatolik!" });
-      });
+      .catch(() => notification.error({ message: "Brendlarni yuklashda xatolik!" }));
+
+    // 🔹 Mahsulotlarni olish (Fake Store API)
+    axios
+      .get("https://fakestoreapi.com/products") 
+      .then((response) => {
+        if (response.data) {
+          setCards(response.data);
+        } else {
+          throw new Error("Mahsulotlar ma'lumoti kelmadi");
+        }
+      })
+      .catch(() => notification.error({ message: "Mahsulotlarni yuklashda xatolik!" }));
   }, []);
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+      { breakpoint: 1024, settings: { slidesToShow: 2 } },
+      { breakpoint: 640, settings: { slidesToShow: 1 } },
+    ],
+  };
 
   return (
     <div className="w-full min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-md p-4 flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          {/* Site Logo (User qo‘shadi) */}
-          <img src="./imgs/ashyo-logo.png" alt="Ashyo Logo" className="h-10" />
-          <nav className="hidden md:flex gap-6 text-gray-700">
-            <Link to="/" className="hover:text-blue-600">Asosiy</Link>
-            <Link to="/products" className="hover:text-blue-600">Mahsulotlar</Link>
-            <Link to="/contact" className="hover:text-blue-600">Kontakt</Link>
-          </nav>
-        </div>
-        {/* Search bar */}
-        <div className="flex items-center border rounded-lg px-2 bg-gray-50">
-          <Search className="text-gray-500" />
-          <Input placeholder="Qidiruv..." className="border-none focus:ring-0" />
-        </div>
-        <div className="flex items-center gap-4">
-          <Link to="/cart">
-            <ShoppingCart className="text-gray-700" />
-          </Link>
-          <Link to="/profile">
-            <User className="text-gray-700" />
-          </Link>
-        </div>
-      </header>
+
       {/* Hero section */}
       <section className="p-8 text-center bg-white shadow-md mt-4">
         <h1 className="text-3xl font-bold text-gray-800">Siz kutgan Xiaomi 12 Mi Laite</h1>
@@ -55,21 +59,50 @@ const Home = () => {
           Batafsil
         </Button>
       </section>
-      {/* Product showcase (Rasm user qo‘shadi) */}
+
+      {/* Product showcase */}
       <div className="flex justify-center mt-6">
         <img src="./imgs/phone.png" alt="Product" className="h-80" />
       </div>
+
       {/* Brandlar */}
       <section className="mt-8 p-4 bg-white shadow-md">
         <h2 className="text-2xl font-semibold text-gray-800">Brendlar</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
-          {brands.map((brand) => (
-            <div key={brand.id} className="p-4 border rounded-lg shadow-sm text-center">
-              <img src={brand.imageUrl} alt={brand.name} className="h-16 mx-auto" />
-              <p className="mt-2 text-gray-700">{brand.name}</p>
-            </div>
-          ))}
+          {brands.length > 0 ? (
+            brands.map((brand) => (
+              <div key={brand.id} className="p-4 border rounded-lg shadow-sm text-center">
+                <p className="text-gray-700">{brand.name}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 text-center">Brendlar mavjud emas</p>
+          )}
         </div>
+      </section>
+
+      {/* Cards - Slider */}
+      <section className="mt-8 p-4 bg-white shadow-md">
+        <h2 className="text-2xl font-semibold text-gray-800 text-center">Mahsulotlar</h2>
+        {cards.length > 0 ? (
+          <Slider {...sliderSettings} className="mt-4">
+            {cards.map((card) => (
+              <div key={card.id} className="p-4">
+                <div className="border shadow-md p-4 rounded-lg text-center">
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className="w-full h-40 object-cover rounded-lg"
+                  />
+                  <h3 className="text-lg font-semibold mt-2">{card.title}</h3>
+                  <p className="text-gray-600">${card.price}</p>
+                </div>
+              </div>
+            ))}
+          </Slider>
+        ) : (
+          <p className="text-gray-500 text-center mt-4">Mahsulotlar mavjud emas</p>
+        )}
       </section>
     </div>
   );

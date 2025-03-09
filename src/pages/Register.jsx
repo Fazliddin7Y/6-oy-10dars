@@ -12,7 +12,7 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
     register({ username, email, password });
-    navigate("/login"); // ✅ Ro‘yxatdan o‘tganidan keyin login sahifasiga yo‘naltirish
+    navigate("/login");
   };
 
   return (
