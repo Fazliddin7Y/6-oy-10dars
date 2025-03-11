@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Button from "../components/ui/button";
 import axios from "axios";
 import { notification } from "antd";
@@ -25,7 +26,7 @@ const Home = () => {
 
     // 🔹 Mahsulotlarni olish (Fake Store API)
     axios
-      .get("https://fakestoreapi.com/products") 
+      .get("https://fakestoreapi.com/products")
       .then((response) => {
         if (response.data) {
           setCards(response.data);
@@ -40,7 +41,7 @@ const Home = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 3, // Slayderda 3 ta chiqishi uchun
     slidesToScroll: 1,
     responsive: [
       { breakpoint: 1024, settings: { slidesToShow: 2 } },
@@ -51,7 +52,7 @@ const Home = () => {
   return (
     <div className="w-full min-h-screen bg-gray-100">
 
-      {/* Hero section */}
+      {/* Header */}
       <section className="p-8 text-center bg-white shadow-md mt-4">
         <h1 className="text-3xl font-bold text-gray-800">Siz kutgan Xiaomi 12 Mi Laite</h1>
         <p className="text-gray-600 mt-2">Yangi avlod texnologiyasi bilan tanishing!</p>
@@ -60,12 +61,12 @@ const Home = () => {
         </Button>
       </section>
 
-      {/* Product showcase */}
+      {/* Hero rasm */}
       <div className="flex justify-center mt-6">
         <img src="./imgs/phone.png" alt="Product" className="h-80" />
       </div>
 
-      {/* Brandlar */}
+      {/* Brendlar */}
       <section className="mt-8 p-4 bg-white shadow-md">
         <h2 className="text-2xl font-semibold text-gray-800">Brendlar</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
@@ -96,6 +97,12 @@ const Home = () => {
                   />
                   <h3 className="text-lg font-semibold mt-2">{card.title}</h3>
                   <p className="text-gray-600">${card.price}</p>
+                  {/* Batafsil sahifaga yo'naltirish */}
+                  <Link to={`/card/${card.id}`}>
+                    <Button className="mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                      Batafsil
+                    </Button>
+                  </Link>
                 </div>
               </div>
             ))}

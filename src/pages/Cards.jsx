@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -21,18 +22,8 @@ const Cards = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
     responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 640,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
+      { breakpoint: 1024, settings: { slidesToShow: 2 } },
+      { breakpoint: 640, settings: { slidesToShow: 1 } },
     ],
   };
 
@@ -46,6 +37,12 @@ const Cards = () => {
               <img src={card.image} alt={card.title} className="w-full h-40 object-cover rounded-lg" />
               <h3 className="text-lg font-semibold mt-2">{card.title}</h3>
               <p className="text-gray-600">{card.description}</p>
+              {/* Batafsil tugmasi - mahsulot sahifasiga yo'naltiradi */}
+              <Link to={`/card/${card.id}`}>
+                <button className="mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                  Batafsil
+                </button>
+              </Link>
             </div>
           </div>
         ))}

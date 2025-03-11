@@ -6,7 +6,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Add from "./pages/Add";
-import Profile from "./pages/Profile"; //
+import Profile from "./pages/Profile";
+import CardDetails from "./pages/Cards"; 
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/add" element={<Add />} />
-            <Route path="/profile" element={<Profile />} /> {/* 🟢 Profile-ni qo‘shdik */}
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/card/:id" element={<CardDetails />} /> {/* 🆕 Yangi route qo‘shildi */}
           </Routes>
         </Router>
       </DataProvider>
